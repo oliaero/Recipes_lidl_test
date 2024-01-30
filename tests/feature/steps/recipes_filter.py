@@ -4,7 +4,7 @@ from hamcrest import assert_that, is_, equal_to, contains_string
 from tests.feature.page_object.home_page import HomePage
 
 from tests.feature.page_object.recipes_page import RecipesPage
-
+import time
 use_step_matcher("re")
 
 
@@ -32,11 +32,13 @@ def step_impl(context):
     context.home_page = HomePage(context.driver, context.wait)
     context.home_page.accept_cookie_banner()
     context.home_page.click_all_recipes_button()
+    context.recipes_page = RecipesPage(context.driver, context.wait)
 
 
 @when('I click "Tipo de plato" in the recipes filter')
 def step_impl(context):
     context.recipes_page.click_course_button()
+    context.recipes_page.wait_until_dropdown_menu_is_loaded()
 
 
 @step('I click "Postres" in dropdown menu')
@@ -51,13 +53,35 @@ def step_impl(context):
     assert_that(total_result, contains_string(total_desserts))
 
 
+@step("I can see recipes")
+def step_impl(context):
+
+    context.initial_number_of_recipes = context.recipes_page.count_items_on_the_page()
+
 @when('I click "Mostrar más recetas"')
 def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    raise NotImplementedError(u'STEP: When I click "Mostrar más recetas"')
+    context.recipes_page.click_load_more_button()
+    context.recipes_page.wait_until_more_recipes_loaded()
 
-
-@step("I can see")
+@then("I can see more recipes on the page")
 def step_impl(context):
+    uploaded_number_of_recipes = context.recipes_page.count_items_on_the_page()
+
+    assert_that(uploaded_number_of_recipes, equal_to(context.initial_number_of_recipes * 2))
+
+
+@step("I have selected desserts recipes by courses")
+def step_impl(context):
+    context.recipes_page.click_course_button()
+    context.recipes_page.click_desserts_button()
+
+
+@step("I have selected St Valentine by collection")
+def step_impl(context):
+    context.recipes_page.click_collection_button()
+    context.recipes_page.click_valentin_day_button()
+
+
+@when("I click remove filter from St Valentine")
+def step_impl(context):
+    context.recipes_page.click_remove_valentin_day_filter()
