@@ -28,5 +28,12 @@ Feature: Recipes filter
     When I click remove filter from St Valentine
     Then I can see desserts recipes
 
+  Scenario: Sort recipes
+    Given I am on the recipes page
+    When I sort recipes by total time
+    Then I see recipes sorted by cooking time from low to high
+
+
+
 
 

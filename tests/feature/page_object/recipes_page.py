@@ -62,3 +62,14 @@ class RecipesPage:
 
     def click_remove_valentin_day_filter(self):
         self.driver.find_element(By.CSS_SELECTOR, '[data-filter-id="05cbddce-fa68-4d5d-ad1e-4f0828f85de3"]')
+
+    def click_sorted_by_dropdown(self):
+        self.driver.find_element(By.CSS_SELECTOR, '[class="lirc-o-recipe-search__order-select-field lirc-m-select-field__select nuc-a-select"]').click()
+
+    def click_total_time_sorted(self):
+        self.driver.find_element(By.CSS_SELECTOR, '[value="total_time"]').click()
+
+    def get_cooking_time_first_recipe(self):
+        [id = "result-page-1"]
+    def get_cooking_time_last_recipe(self):
+        (// *[@class ="lirc-o-card lidl-o-card nuc-o-card"])[36]

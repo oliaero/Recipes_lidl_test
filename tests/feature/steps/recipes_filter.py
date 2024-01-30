@@ -49,7 +49,9 @@ def step_impl(context):
 @then("I can see desserts recipes")
 def step_impl(context):
     total_desserts = context.recipes_page.get_number_desserts_recipes_from_dropdown_menu()
+
     total_result = context.recipes_page.get_total_result_number_recipes()
+
     assert_that(total_result, contains_string(total_desserts))
 
 
@@ -85,3 +87,13 @@ def step_impl(context):
 @when("I click remove filter from St Valentine")
 def step_impl(context):
     context.recipes_page.click_remove_valentin_day_filter()
+
+
+@when("I sort recipes by total time")
+def step_impl(context):
+    context.recipes_page.click_sorted_by_dropdown()
+    context.recipes_page.click_total_time_sorted()
+
+
+@then("I see recipes sorted by cooking time from low to high")
+def step_impl(context):
